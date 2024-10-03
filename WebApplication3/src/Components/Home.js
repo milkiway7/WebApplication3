@@ -2,7 +2,7 @@
 
 const Home = () => {
     return (
-        <div id="root">
+        <div>
             <h1>Co jest kurwa</h1>
         </div>
     )
