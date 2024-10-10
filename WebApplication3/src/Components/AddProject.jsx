@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 
 const AddProject = () => {
+
     return (
         <div className="container row">
             <form className="col-9">
@@ -125,14 +126,16 @@ const ProjectDetails = () => {
 }
 
 const Deliverables = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [isDeliverable, setIsDeliverable] = useState(false)
+    function showDeliverableModal() {
+        setIsDeliverable(!isDeliverable)
+    }
+
     return (
         <div>
             <h2>Deliverables</h2>
-            <button className="btn btn-light">Deliverables</button>
-            {showModal && (
-                <div className="modal d-block" tabIndex="-1" role="dialog"></div>
-            ) }
+            <button type="button" className="btn btn-light" onClick={showDeliverableModal}>Deliverables</button>
+            { isDeliverable && <h1>MODAL</h1>}
         </div>
     )
 }
