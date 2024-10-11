@@ -1,13 +1,16 @@
 ﻿import React, { useState } from 'react';
+import { Modal } from './Modal';
+import { addProjectConstants } from "../Constants/Constants";
 
 const AddProject = () => {
-
     return (
         <div className="container row">
             <form className="col-9">
                 <GeneralInformation />
                 <ProjectDetails />
-                <Deliverables/>
+                <Deliverables
+                    deliverablesModal={ addProjectConstants.deliverables }
+                />
                 <AdditionalInformation/>    
             </form>
         </div>
@@ -125,17 +128,20 @@ const ProjectDetails = () => {
     )
 }
 
-const Deliverables = () => {
-    const [isDeliverable, setIsDeliverable] = useState(false)
+const Deliverables = ({ deliverablesModal }) => {
+    const [isOpen, setIsOpen] = useState(false)
+    console.log(deliverablesModal)
     function showDeliverableModal() {
-        setIsDeliverable(!isDeliverable)
+        setIsOpen(!isOpen)
     }
 
     return (
         <div>
             <h2>Deliverables</h2>
             <button type="button" className="btn btn-light" onClick={showDeliverableModal}>Deliverables</button>
-            { isDeliverable && <h1>MODAL</h1>}
+            {isOpen && <Modal
+                isOpen={isOpen}
+            />}
         </div>
     )
 }
@@ -151,4 +157,5 @@ const AdditionalInformation = () => {
         </div>
     )
 }
+
 export default AddProject;
