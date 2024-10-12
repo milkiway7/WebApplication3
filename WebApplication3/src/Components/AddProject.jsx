@@ -9,9 +9,9 @@ const AddProject = () => {
                 <GeneralInformation />
                 <ProjectDetails />
                 <Deliverables
-                    deliverablesModal={ addProjectConstants.deliverables }
+                    deliverablesModal={addProjectConstants.deliverables}
                 />
-                <AdditionalInformation/>    
+                <AdditionalInformation />
             </form>
         </div>
     )
@@ -21,7 +21,7 @@ const AddProject = () => {
 const GeneralInformation = () => {
     return (
         <div>
-        <h2>General information</h2>
+            <h2>General information</h2>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>
                 <input id="projectName" type="text" className="form-control" placeholder="Project name"></input>
@@ -29,9 +29,9 @@ const GeneralInformation = () => {
             <div className="form-group mb-2">
                 <label for="client" className="mb-1">Client</label>
                 <select id="client" class="form-select">
-                    <option value="1">Client 1</option>
-                    <option value="2">Client 2</option>
-                    <option value="3">Client 3</option>
+                    <option value="Client 1">Client 1</option>
+                    <option value="Client 2">Client 2</option>
+                    <option value="Client 3">Client 3</option>
                 </select>
             </div>
             <div className="form-group mb-2">
@@ -42,17 +42,17 @@ const GeneralInformation = () => {
                 <div className="col-6 form-group">
                     <label for="department" className="mb-1">Department</label>
                     <select id="department" className="form-select">
-                        <option value="1">Department 1</option>
-                        <option value="2">Department 2</option>
-                        <option value="3">Department 3</option>
+                        <option value="Department 1">Department 1</option>
+                        <option value="Department 2">Department 2</option>
+                        <option value="Department 3">Department 3</option>
                     </select>
                 </div>
                 <div className="col-6 form-group">
                     <label for="process" className="mb-1">Process</label>
                     <select id="process" className="form-select">
-                        <option value="1">Process 1</option>
-                        <option value="2">Process 2</option>
-                        <option value="3">Process 3</option>
+                        <option value="Process 1">Process 1</option>
+                        <option value="Process2">Process 2</option>
+                        <option value="Process 3">Process 3</option>
                     </select>
                 </div>
             </div>
@@ -130,7 +130,7 @@ const ProjectDetails = () => {
 
 const Deliverables = ({ deliverablesModal }) => {
     const [isOpen, setIsOpen] = useState(false)
-    console.log(deliverablesModal)
+
     function showDeliverableModal() {
         setIsOpen(!isOpen)
     }
@@ -141,6 +141,8 @@ const Deliverables = ({ deliverablesModal }) => {
             <button type="button" className="btn btn-light" onClick={showDeliverableModal}>Deliverables</button>
             {isOpen && <Modal
                 isOpen={isOpen}
+                showDeliverableModal={showDeliverableModal}
+                modalData ={ deliverablesModal }
             />}
         </div>
     )

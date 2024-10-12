@@ -1,17 +1,22 @@
 ﻿export const addProjectConstants = {
     deliverables: {
         title: "Deliverables",
-        fields: {
-            name: {
+        fields: [
+            {
+                id:"name",
                 label: "Name",
                 type: "text",
                 options: null
             },
-            state: {
+            {
+                id:"state",
                 label: "State",
                 type: "select",
-                options: ["Done","In progress","Not started","On hold","Rejected","Testing phase"]
+                options: ["Done", "In progress", "Not started", "On hold", "Rejected", "Testing phase"]
             }
-        }
+        ]
     }
 }
+
+
+
