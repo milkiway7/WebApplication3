@@ -131,17 +131,17 @@ const ProjectDetails = () => {
 const Deliverables = ({ deliverablesModal }) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    function showDeliverableModal() {
+    function showModal() {
         setIsOpen(!isOpen)
     }
 
     return (
         <div>
             <h2>Deliverables</h2>
-            <button type="button" className="btn btn-light" onClick={showDeliverableModal}>Deliverables</button>
+            <button type="button" className="btn btn-light" onClick={showModal}>Deliverables</button>
             {isOpen && <Modal
                 isOpen={isOpen}
-                showDeliverableModal={showDeliverableModal}
+                showModal={showModal}
                 modalData ={ deliverablesModal }
             />}
         </div>
