@@ -47,7 +47,8 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
                             <div className="form-group mb-2">
                                 <label for={field.id} className="mb-1">{field.label}</label>
                                 <span className="text-danger">*</span>
-                                {field.options ? <select id={field.id} className="form-select" value={states[index]} onChange={(e) => updateStates(index, e.target.value, states, setStates) }>
+                                {field.options ? <select id={field.id} className="form-select" value={states[index]} onChange={(e) => updateStates(index, e.target.value, states, setStates)}>
+                                    <option value="" disabled>Choose...</option>
                                     {field.options.map(option => {
                                         return (
                                             <option value={ option }>{option}</option>
@@ -59,7 +60,7 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
                     })}
                 </form>
                 <div className="d-flex justify-content-center mt-4">
-                    <button type="button" onClick={() => { sendDataToParent() ; modalBackgroundOverflow() }  }>Add</button>
+                    <button type="button" onClick={() => { sendDataToParent() ; showModal() }  }>Add</button>
                 </div>
             </div>
             <div className={isOpen ? 'overlay active' : ''} onClick={handleOverlayClick}></div>
