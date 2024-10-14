@@ -1,12 +1,12 @@
 ﻿import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
-export const Modal = ({ isOpen, showModal, modalData }) => {
+export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => {
     const items = modalData.fields.map(field=> field.id);
     const [states, setStates] = useState(items.map(() => ''));
     
     useEffect(() => {
-        modalFunctionality(isOpen);
+        modalBackgroundOverflow(isOpen);
 
         return () => {
             document.body.style.overflow = "auto";
@@ -18,6 +18,19 @@ export const Modal = ({ isOpen, showModal, modalData }) => {
             showModal();
         }
     };
+    const sendDataToParent = () => {
+        const hasEmptyInputs = states.some(state => state.trim() === "")
+
+        if (hasEmptyInputs) {
+            alert("Please fill out all fields before submitting.")
+            return
+        }
+        const dataForParent = items.reduce((acc, item, index) => {
+            acc[item] = states[index]
+            return acc
+        }, {})
+        handleDataFromModal(dataForParent)
+    }
 
     return (
         <>
@@ -33,6 +46,7 @@ export const Modal = ({ isOpen, showModal, modalData }) => {
                         return (
                             <div className="form-group mb-2">
                                 <label for={field.id} className="mb-1">{field.label}</label>
+                                <span className="text-danger">*</span>
                                 {field.options ? <select id={field.id} className="form-select" value={states[index]} onChange={(e) => updateStates(index, e.target.value, states, setStates) }>
                                     {field.options.map(option => {
                                         return (
@@ -44,27 +58,16 @@ export const Modal = ({ isOpen, showModal, modalData }) => {
                         )
                     })}
                 </form>
-
-
-
-                <div>
-                    {states.map((state, index) => {
-                        return (
-                            <p>{state}</p>
-
-                        )
-                    })}
+                <div className="d-flex justify-content-center mt-4">
+                    <button type="button" onClick={() => { sendDataToParent() ; modalBackgroundOverflow() }  }>Add</button>
                 </div>
-
-
-
             </div>
             <div className={isOpen ? 'overlay active' : ''} onClick={handleOverlayClick}></div>
         </>
     )
 }
 
-function modalFunctionality(isOpen) {
+function modalBackgroundOverflow(isOpen) {
     if (isOpen) {
         document.body.style.overflow = "hidden";
     }
@@ -74,8 +77,4 @@ function updateStates(index, value, states, setStates){
     const newStates = [...states]
     newStates[index] = value
     setStates(newStates)
-}
-
-export const ModalTable = () => {
-
 }
