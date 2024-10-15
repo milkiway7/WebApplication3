@@ -2,9 +2,9 @@
 import { IoMdClose } from "react-icons/io";
 
 export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => {
-    const items = modalData.fields.map(field=> field.id);
+    const items = modalData.fields.map(field => field.id);
     const [states, setStates] = useState(items.map(() => ''));
-    
+
     useEffect(() => {
         modalBackgroundOverflow(isOpen);
 
@@ -25,11 +25,8 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
             alert("Please fill out all fields before submitting.")
             return
         }
-        const dataForParent = items.reduce((acc, item, index) => {
-            acc[item] = states[index]
-            return acc
-        }, {})
-        handleDataFromModal(dataForParent)
+
+        handleDataFromModal(states)
     }
 
     return (
@@ -42,7 +39,7 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
                     </button>
                 </div>
                 <form>
-                    {modalData.fields.map((field ,index)=> {
+                    {modalData.fields.map((field, index) => {
                         return (
                             <div className="form-group mb-2">
                                 <label for={field.id} className="mb-1">{field.label}</label>
@@ -51,7 +48,7 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
                                     <option value="" disabled>Choose...</option>
                                     {field.options.map(option => {
                                         return (
-                                            <option value={ option }>{option}</option>
+                                            <option value={option}>{option}</option>
                                         )
                                     })}
                                 </select> : <input id={field.id} className="form-control" type={field.type} value={states[index]} onChange={(e) => updateStates(index, e.target.value, states, setStates)}></input>}
@@ -60,7 +57,7 @@ export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => 
                     })}
                 </form>
                 <div className="d-flex justify-content-center mt-4">
-                    <button type="button" onClick={() => { sendDataToParent() ; showModal() }  }>Add</button>
+                    <button type="button" onClick={() => { sendDataToParent(); showModal() }}>Add</button>
                 </div>
             </div>
             <div className={isOpen ? 'overlay active' : ''} onClick={handleOverlayClick}></div>
@@ -74,8 +71,46 @@ function modalBackgroundOverflow(isOpen) {
     }
 }
 
-function updateStates(index, value, states, setStates){
+function updateStates(index, value, states, setStates) {
     const newStates = [...states]
     newStates[index] = value
     setStates(newStates)
+}
+
+export const ModalTable = ({ isOpen, modalData, dataForTable }) => {
+
+    var modalHasData = dataForTable.length !== 0;
+
+    if (!modalHasData) {
+        return null
+    }
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Id.</th>
+                    {modalData.fields.map(field => {
+                        return (
+                            <th>{field.label}</th>
+                        )
+                    })}
+                </tr>
+            </thead>
+            <tbody>
+                {dataForTable.map((row, index) => {
+                    return (
+                        <tr>
+                            <th>{ index + 1}</th>
+                            {row.map(col => {
+                                return (
+                                    <th>{col}</th>
+                                )
+                            })}
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </table>
+    );
 }

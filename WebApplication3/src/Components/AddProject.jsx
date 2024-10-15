@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Modal } from './Modal';
+import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
 
 const AddProject = () => {
@@ -130,19 +130,19 @@ const ProjectDetails = () => {
 
 const Deliverables = ({ deliverablesModal }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [modalData, setModalData] = useState([])
+    const [dataForTable, setDataForTable] = useState([])
 
     function handleDataFromModal(newItems) {
-        setModalData(prevItems => [...prevItems, newItems])
+        setDataForTable(prevItems => [...prevItems, newItems])
     }
     function showModal() {
         setIsOpen(!isOpen)
     }
 
-
     useEffect(() => {
-        console.log(modalData)
-    },[modalData])
+        console.log(dataForTable)
+    },[dataForTable])
+
     return (
         <div>
             <h2>Deliverables</h2>
@@ -153,6 +153,11 @@ const Deliverables = ({ deliverablesModal }) => {
                 modalData={deliverablesModal}
                 handleDataFromModal={handleDataFromModal }
             />}
+            <ModalTable
+                isOpen={isOpen}
+                modalData={deliverablesModal}
+                dataForTable={dataForTable}
+            />
         </div>
     )
 }
