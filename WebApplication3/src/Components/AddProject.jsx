@@ -139,22 +139,19 @@ const Deliverables = ({ deliverablesModal }) => {
         setIsOpen(!isOpen)
     }
 
-    useEffect(() => {
-        console.log(dataForTable)
-    },[dataForTable])
-
     return (
         <div>
             <h2>Deliverables</h2>
-            <button type="button" className="btn btn-light" onClick={showModal}>Deliverables</button>
+            <div className="d-flex ">
+                <button type="button" className="ms-auto" onClick={showModal}>Deliverables</button>
+            </div>
             {isOpen && <Modal
                 isOpen={isOpen}
                 showModal={showModal}
                 modalData={deliverablesModal}
-                handleDataFromModal={handleDataFromModal }
+                handleDataFromModal={handleDataFromModal}
             />}
             <ModalTable
-                isOpen={isOpen}
                 modalData={deliverablesModal}
                 dataForTable={dataForTable}
             />

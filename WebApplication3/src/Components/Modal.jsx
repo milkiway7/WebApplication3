@@ -1,5 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
+import { CiCircleRemove } from "react-icons/ci";
 
 export const Modal = ({ isOpen, showModal, modalData, handleDataFromModal }) => {
     const items = modalData.fields.map(field => field.id);
@@ -77,7 +79,7 @@ function updateStates(index, value, states, setStates) {
     setStates(newStates)
 }
 
-export const ModalTable = ({ isOpen, modalData, dataForTable }) => {
+export const ModalTable = ({ modalData, dataForTable }) => {
 
     var modalHasData = dataForTable.length !== 0;
 
@@ -100,17 +102,25 @@ export const ModalTable = ({ isOpen, modalData, dataForTable }) => {
             <tbody>
                 {dataForTable.map((row, index) => {
                     return (
-                        <tr>
+                        <tr className="table-row">
                             <th>{ index + 1}</th>
                             {row.map(col => {
                                 return (
                                     <th>{col}</th>
                                 )
                             })}
+                            <th className="icon-cell">
+                                <CiEdit className="icon" size={24} />
+                                <CiCircleRemove className="icon" size={24} />
+                            </th>
                         </tr>
                     )
                 })}
             </tbody>
         </table>
     );
+}
+
+function removeItemFromTable(dataForTable) {
+
 }

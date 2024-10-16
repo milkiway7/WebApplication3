@@ -76,12 +76,26 @@ td {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Wyszarzenie */
+    background-color: rgba(0, 0, 0, 0.5); 
 }
 .overlay.active {
     display: block;
 }
 
+.icon{
+    visibility:hidden;
+    margin-right:10px;
+}
+
+.table-row:hover .icon{
+    visibility: visible;
+    cursor:pointer;
+}
+
+.icon-cell {
+    text-align: center; 
+    width: 100px;
+}
 
 /*RESPONSIVE*/
 @media(max-width: 575px) {
