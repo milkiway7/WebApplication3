@@ -20,7 +20,7 @@ namespace DataAccess.Models.Authentication
         public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage ="Password did not match")]
         [DisplayName("Confirm password")]
         public string ConfirmPassword { get; set; }
