@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace DataAccess.Models.Authentication
     {
         [Required]
         [DataType(DataType.EmailAddress)]
+        [DisplayName("Email address")]
         public string EmailAddress { get; set; }
 
         [Required]
@@ -20,6 +22,7 @@ namespace DataAccess.Models.Authentication
         [Required]
         [DataType(DataType.EmailAddress)]
         [Compare(nameof(Password), ErrorMessage ="Password did not match")]
+        [DisplayName("Confirm password")]
         public string ConfirmPassword { get; set; }
     }
 }

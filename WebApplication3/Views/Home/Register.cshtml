@@ -10,20 +10,23 @@
         <h2>Register</h2>
     </div>
     <form method="post">
-        <div>
+        <div class="mt-2">
             <label class="form-label" asp-for="EmailAddress"></label>
             <input class="form-control" asp-for="EmailAddress" />
             <span asp-validation-for="EmailAddress" class="text-danger"></span>
         </div>
-        <div>
+        <div class="mt-2">
             <label asp-for="Password" class="form-label"></label>
             <input asp-for="Password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-        <div>
+        </div class="mt-2">
+        <div class="mt-2">
             <label asp-for="ConfirmPassword" class="form-label"></label>
             <input asp-for="ConfirmPassword" class="form-control"/>
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        <div class="text-center mt-3">
+            <button type="submit">Register</button>
         </div>
     </form>
 
