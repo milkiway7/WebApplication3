@@ -1,3 +1,4 @@
+using DataAccess.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplication3.Models;
@@ -22,6 +23,11 @@ namespace WebApplication3.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Register()
+        {
+            return View();
         }
     }
 }
