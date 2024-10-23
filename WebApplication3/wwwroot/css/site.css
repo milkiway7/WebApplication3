@@ -1,22 +1,123 @@
+/*=========================
+    GENERAL
+===========================*/
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    font-size: 14px;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+#main-conainer {
+    position: relative;
 }
 
-body {
-  margin-bottom: 60px;
+button{
+    all: unset;
+    border: 1px solid;
+    border-color:#D0D9E7;
+    padding: 0.3rem 16px 0.3rem 16px;
+    font-weight:600;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 14px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: white;
+    color: black;
+    text-align: center;
+    font-weight: 500;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+td {
+    text-align: center;
+}
+
+.asp-summary-validation ul{
+    list-style-type: none;
+    padding-left:0;
+}
+
+/*=============================
+    MODAL
+=============================*/
+.modal-style {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: white;
+    z-index: 1000;
+}
+
+.modal-topbar {
+    display: flex;
+    justify-content:space-between;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+.overlay.active {
+    display: block;
+}
+
+.icon{
+    visibility:hidden;
+    margin-right:10px;
+}
+
+.table-row:hover .icon{
+    visibility: visible;
+    cursor:pointer;
+}
+
+.icon-cell {
+    text-align: center; 
+    width: 100px;
+}
+
+/*RESPONSIVE*/
+@media(max-width: 575px) {
+    .modal-style {
+        width: 100%;
+    }
+}
+
+@media(min-width: 575px) {
+    .modal-style {
+        width: 434px;
+    }
+}
+
+@media(min-width: 990px) {
+    .modal-style {
+        width: 798px;
+    }
 }

@@ -2,8 +2,8 @@
 
 const Home = () => {
     return (
-        <div id="root">
-            <h1>Co jest kurwa</h1>
+        <div>
+            <h1>HOME</h1>
         </div>
     )
 }
