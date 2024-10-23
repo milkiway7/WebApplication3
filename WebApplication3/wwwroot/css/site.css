@@ -54,6 +54,11 @@ td {
     text-align: center;
 }
 
+.asp-summary-validation ul{
+    list-style-type: none;
+    padding-left:0;
+}
+
 /*=============================
     MODAL
 =============================*/
