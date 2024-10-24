@@ -9,14 +9,10 @@ namespace WebApplication3.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -36,23 +32,6 @@ namespace WebApplication3.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LogInAsync(SignInPageModel signInPageModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(signInPageModel.EmailAddress, signInPageModel.Password, signInPageModel.RememberMe, false);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                ModelState.AddModelError("", "Email or password are incorrect");
-            }
-
-            return View();
-        }
         #endregion
 
         #region Register
@@ -61,44 +40,7 @@ namespace WebApplication3.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterPageModel registerModel)
-        {
-            if (ModelState.IsValid)
-            {
-
-                IdentityUser user = new IdentityUser()
-                {
-                    UserName = registerModel.EmailAddress,
-                    Email = registerModel.EmailAddress,
-                };
-
-                IdentityResult result = await _userManager.CreateAsync(user, registerModel.Password);
-
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index));
-                }
-
-                foreach(IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-            }
-
-            return View(registerModel);
-        }
         #endregion
 
-        #region Log out
-        public async Task<IActionResult> LogOut()
-        {
-            await _signInManager.SignOutAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
-        #endregion
     }
 }
