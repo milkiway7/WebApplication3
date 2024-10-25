@@ -8,8 +8,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models.Authentication
 {
-    public class RegisterPageModel
+    public class UserModel
     {
+        [Required]
+        public Guid Id = Guid.NewGuid();
+
+        [Required]
+        public DateTime CreatedAt = DateTime.Now;
+
         [Required(ErrorMessage = "Email address is required")]
         [DataType(DataType.EmailAddress)]
         [DisplayName("Email address")]
@@ -24,5 +30,7 @@ namespace DataAccess.Models.Authentication
         [Compare(nameof(Password), ErrorMessage ="Password did not match")]
         [DisplayName("Confirm password")]
         public string ConfirmPassword { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }

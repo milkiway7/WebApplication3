@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    public class ModelAddProject
+    public class AddProjectModel
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
