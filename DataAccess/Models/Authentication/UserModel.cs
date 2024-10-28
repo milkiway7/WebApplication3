@@ -14,10 +14,10 @@ namespace DataAccess.Models.Authentication
     {
         [Required]
         [Key]
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid Id { get; init; }
 
         [Required]
-        public DateTime CreatedAt { get; init; }  = DateTime.Now;
+        public DateTime CreatedAt { get; init; }
 
         [Required(ErrorMessage = "Email address is required")]
         [DataType(DataType.EmailAddress)]
