@@ -1,4 +1,5 @@
 using DataAccess.Models.Authentication;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,10 +10,11 @@ namespace WebApplication3.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUserRepository _userRepository;
+        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository)
         {
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
@@ -37,6 +39,32 @@ namespace WebApplication3.Controllers
         #region Register
         public IActionResult Register()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync(UserModel user)
+        {
+            if(ModelState.IsValid)
+            {
+                UserModel userExsist = await _userRepository.GetUserByEmailAsync(user.EmailAddress);
+
+                if(userExsist == null)
+                {
+                    UserModel newUser = new UserModel()
+                    {
+                        EmailAddress = user.EmailAddress,
+                        Password = _userRepository.HashPassword(user.Password),
+                        RememberMe = user.RememberMe
+                    };
+
+                    await _userRepository.CreateUserAsync(newUser);
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            ModelState.AddModelError("", "Registration failed. Please try agian.");
             return View();
         }
 
