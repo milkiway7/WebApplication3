@@ -97,13 +97,16 @@ namespace WebApplication3.Controllers
 
                         ClaimsIdentity identity = new ClaimsIdentity(claims, _configuration["CookieName"]);
                         ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                        AuthenticationProperties authProp = new AuthenticationProperties()
+                        {
+                            IsPersistent = user.RememberMe
+                        };
 
-                        await HttpContext.SignInAsync(_configuration["CookieName"], principal);
+                        await HttpContext.SignInAsync(_configuration["CookieName"], principal, authProp);
 
                         return RedirectToAction(nameof(Index));
                     }
                 }
-
             }
 
             ModelState.AddModelError("", "Email or password are incorrect");
@@ -112,10 +115,12 @@ namespace WebApplication3.Controllers
         #endregion
 
         #region Log out 
-        //public Task<IActionResult> LogOutAsync()
-        //{
-        //    HttpContext.SignOutAsync
-        //}
+        public async Task<IActionResult> LogOutAsync()
+        {
+            await HttpContext.SignOutAsync(_configuration["CookieName"]);
+
+            return RedirectToAction(nameof(Index));
+        }
         #endregion
 
     }

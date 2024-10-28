@@ -35,6 +35,7 @@ namespace DataAccess.Models.Authentication
         [DisplayName("Confirm password")]
         public string? ConfirmPassword { get; set; }
 
+        [DisplayName("Remember me")]
         public bool RememberMe { get; set; }
     }
 }

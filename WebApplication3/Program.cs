@@ -19,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(builder.Configuration["CookieName"]).AddCookie(builder.Configuration["CookieName"], options =>
 {
     options.Cookie.Name = builder.Configuration["CookieName"];
+    options.LoginPath = "/Home/LogIn";
 });
 
 //Repositories
