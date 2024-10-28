@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication3.Controllers
 {
-    [Authorize]
     public class AddProjectController : Controller
     {
 
