@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
 
@@ -11,6 +11,7 @@ const AddProject = () => {
                 <Deliverables
                     deliverablesModal={addProjectConstants.deliverables}
                 />
+                <Budget budgetModal={addProjectConstants.budget} />
                 <AdditionalInformation />
             </form>
         </div>
@@ -153,6 +154,37 @@ const Deliverables = ({ deliverablesModal }) => {
             />}
             <ModalTable
                 modalData={deliverablesModal}
+                dataForTable={dataForTable}
+            />
+        </div>
+    )
+}
+
+const Budget = ({ budgetModal }) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [dataForTable, setDataForTable] = useState([])
+
+    function handleDataFromModal(newItems) {
+        setDataForTable(prevItems => [...prevItems, newItems])
+    }
+    function showModal() {
+        setIsOpen(!isOpen)
+    }
+
+    return (
+        <div>
+            <h2>Budget</h2>
+            <div className="d-flex ">
+                <button type="button" className="ms-auto" onClick={showModal}>Budget</button>
+            </div>
+            {isOpen && <Modal
+                isOpen={isOpen}
+                showModal={showModal}
+                modalData={budgetModal}
+                handleDataFromModal={handleDataFromModal}
+            />}
+            <ModalTable
+                modalData={budgetModal}
                 dataForTable={dataForTable}
             />
         </div>
