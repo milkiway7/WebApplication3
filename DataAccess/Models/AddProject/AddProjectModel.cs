@@ -27,8 +27,9 @@ namespace DataAccess.Models.AddProject
         public string? ProjectStartDate { get; set; }
         public string? ProjectEndDate { get; set; }
         public string? Completion {  get; set; }
-        public string DeliverablesInline { get; set; }
-        public byte[] SupportingDocumentation { get; set; }
+        public string? DeliverablesInline { get; set; }
+        public string? Budget { get; set; }
+        public byte[]? SupportingDocumentation { get; set; }
 
     }
 }

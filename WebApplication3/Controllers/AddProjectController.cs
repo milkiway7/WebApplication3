@@ -11,5 +11,11 @@ namespace WebApplication3.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult AddProjectAsync()
+        {
+            return View();
+        }
     }
 }

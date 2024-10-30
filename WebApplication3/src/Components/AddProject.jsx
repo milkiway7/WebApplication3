@@ -1,35 +1,85 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
 
 const AddProject = () => {
+    const [formData, setFormData] = useState({
+        projectName: '',
+        client: '',
+        shortDescription: '',
+        department: '',
+        process: '',
+        linkTeams: '',
+        projectCoordinator: '',
+        timesheetCode: '',
+        solutionArchitect: '',
+        projectTeam: '',
+        teamsChannelUrl:'',
+        projectStartDate:'',
+        projectEndDate:'',
+        completion:'',
+        deliverables: [],
+        budget: [],
+        supportingDocumentation:''
+    })
+
+    function handleDataChange(e) {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    }
+
+    function handleModalData(field, newData) {
+        setFormData((prevData) => ({
+            ...prevData,
+            [field]: newData
+        }))
+    }
+
+    useEffect(() => { console.log(formData) }, [formData])
+
     return (
         <div className="container row">
-            <form className="col-9">
-                <GeneralInformation />
-                <ProjectDetails />
+            <form className="col-9" method="post">
+                <GeneralInformation
+                    handleDataChange={handleDataChange}
+                    formData={ formData }
+                    />
                 <Deliverables
                     deliverablesModal={addProjectConstants.deliverables}
+                    handleModalData={handleModalData}
                 />
-                <Budget budgetModal={addProjectConstants.budget} />
+                <Budget
+                    budgetModal={addProjectConstants.budget}
+                    handleModalData={handleModalData} />
+                <ProjectDetails
+                    handleDataChange={handleDataChange}
+                    formData={formData}
+                />
                 <AdditionalInformation />
+                <div>
+                    <button type="submit">Add project</button>
+                </div>
             </form>
         </div>
     )
 }
 
 
-const GeneralInformation = () => {
+const GeneralInformation = ({ handleDataChange, formData }) => {
     return (
         <div>
             <h2>General information</h2>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>
-                <input id="projectName" type="text" className="form-control" placeholder="Project name"></input>
+                <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={ handleDataChange }></input>
             </div>
             <div className="form-group mb-2">
                 <label for="client" className="mb-1">Client</label>
-                <select id="client" class="form-select">
+                <select id="client" class="form-select" name="client" value={formData.client} onChange={handleDataChange}>
+                    <option value="" disabled>Choose...</option>
                     <option value="Client 1">Client 1</option>
                     <option value="Client 2">Client 2</option>
                     <option value="Client 3">Client 3</option>
@@ -37,12 +87,13 @@ const GeneralInformation = () => {
             </div>
             <div className="form-group mb-2">
                 <label for="shortDescription" className="mb-1">Short desctiption</label>
-                <input id="shortDescription" type="text" className="form-control"></input>
+                <input id="shortDescription" type="text" className="form-control" name="shortDescription" value={formData.shortDescription} onChange={handleDataChange }></input>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="department" className="mb-1">Department</label>
-                    <select id="department" className="form-select">
+                    <select id="department" className="form-select" name="department" value={formData.department} onChange={handleDataChange}>
+                        <option value="" disabled>Choose...</option>
                         <option value="Department 1">Department 1</option>
                         <option value="Department 2">Department 2</option>
                         <option value="Department 3">Department 3</option>
@@ -50,7 +101,8 @@ const GeneralInformation = () => {
                 </div>
                 <div className="col-6 form-group">
                     <label for="process" className="mb-1">Process</label>
-                    <select id="process" className="form-select">
+                    <select id="process" className="form-select" name="process" value={formData.process} onChange={handleDataChange}>
+                        <option value="" disabled>Choose...</option>
                         <option value="Process 1">Process 1</option>
                         <option value="Process2">Process 2</option>
                         <option value="Process 3">Process 3</option>
@@ -59,77 +111,81 @@ const GeneralInformation = () => {
             </div>
             <div className="form-group mb-2">
                 <label for="link" className="mb-1">Link</label>
-                <input id="link" type="text" className="form-control"></input>
+                <input id="link" type="text" className="form-control" name="link" value={formData.link} onChange={handleDataChange }></input>
             </div>
         </div>
     )
 }
 
-const ProjectDetails = () => {
+const ProjectDetails = ({ handleDataChange, formData }) => {
     return (
         <div>
             <h2>Project details</h2>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectCoordinator" className="mb-1">Project coordinator</label>
-                    <select id="projectCoordinator" className="form-select">
-                        <option value="1">Project 1</option>
-                        <option value="2">Project 2</option>
-                        <option value="3">Project 3</option>
+                    <select id="projectCoordinator" className="form-select" name="projectCoordinator" value={formData.projectCoordinator} onChange={handleDataChange }>
+                        <option value="" disabled>Choose...</option>
+                        <option value="Project 1">Project 1</option>
+                        <option value="Project 2">Project 2</option>
+                        <option value="Project 3">Project 3</option>
                     </select>
                 </div>
                 <div className="col-6 form-group">
                     <label for="timesheetCode" className="mb-1">Timesheet code</label>
-                    <select id="timesheetCode" className="form-select">
-                        <option value="1">Code 1</option>
-                        <option value="2">Code 2</option>
-                        <option value="3">Code 3</option>
+                    <select id="timesheetCode" className="form-select" name="timesheetCode" value={formData.timesheetCode} onChange={handleDataChange}>
+                        <option value="" disabled>Choose...</option>
+                        <option value="Code 1">Code 1</option>
+                        <option value="Code 2">Code 2</option>
+                        <option value="Code 3">Code 3</option>
                     </select>
                 </div>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="solutionArchitect" className="mb-1">Solution architect</label>
-                    <select id="solutionArchitect" className="form-select">
-                        <option value="1">Architect 1</option>
-                        <option value="2">Architect 2</option>
-                        <option value="3">Architect 3</option>
+                    <select id="solutionArchitect" className="form-select" name="solutionArchitect" value={formData.solutionArchitect} onChange={handleDataChange}>
+                        <option value="" disabled>Choose...</option>
+                        <option value="Architect 1">Architect 1</option>
+                        <option value="Architect 2">Architect 2</option>
+                        <option value="Architect 3">Architect 3</option>
                     </select>
                 </div>
                 <div className="col-6 form-group">
                     <label for="projectTeam" className="mb-1">Project team</label>
-                    <select id="projectTeam" className="form-select">
-                        <option value="1">Project 1</option>
-                        <option value="2">Project 2</option>
-                        <option value="3">Project 3</option>
+                    <select id="projectTeam" className="form-select" name="projectTeam" value={formData.projectTeam} onChange={handleDataChange}>
+                        <option value="" disabled>Choose...</option>
+                        <option value="Project 1">Project 1</option>
+                        <option value="Project 2">Project 2</option>
+                        <option value="Project 3">Project 3</option>
                     </select>
                 </div>
             </div>
             <div className="form-group mb-2">
-                <label for="linkTeams" className="mb-1">Teams channer URL</label>
-                <input id="linkTeams" type="text" className="form-control"></input>
+                <label for="linkTeams" className="mb-1">Teams channel URL</label>
+                <input id="linkTeams" type="text" className="form-control" name="teamsChannelUrl" value={formData.teamsChannelUrl} onChange={handleDataChange}></input>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectStartDate" className="mb-1">Project start date</label>
-                    <input id="projectStartDate" type="datetime-local" className="form-control"></input>
+                    <input id="projectStartDate" type="datetime-local" className="form-control" name="projectStartDate" value={formData.projectStartDate} onChange={handleDataChange}></input>
                 </div>
                 <div className="col-6 form-group">
                     <label for="projectEndDate" className="mb-1">Project end date</label>
-                    <input id="projectEndDate" type="datetime-local" className="form-control"></input>
+                    <input id="projectEndDate" type="datetime-local" className="form-control" name="projectEndDate" value={formData.projectEndDate} onChange={handleDataChange}></input>
                 </div>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="completion" className="mb-1">Completion (%)</label>
-                    <input id="completion" type="text" className="form-control"></input>
+                    <input id="completion" type="text" className="form-control" name="completion" value={formData.completion} onChange={handleDataChange}></input>
                 </div>
             </div>
         </div>
     )
 }
 
-const Deliverables = ({ deliverablesModal }) => {
+const Deliverables = ({ deliverablesModal, handleModalData }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [dataForTable, setDataForTable] = useState([])
 
@@ -139,6 +195,9 @@ const Deliverables = ({ deliverablesModal }) => {
     function showModal() {
         setIsOpen(!isOpen)
     }
+    useEffect(() => {
+        handleModalData('deliverables', dataForTable)
+    }, [dataForTable])
 
     return (
         <div>
@@ -160,7 +219,7 @@ const Deliverables = ({ deliverablesModal }) => {
     )
 }
 
-const Budget = ({ budgetModal }) => {
+const Budget = ({ budgetModal, handleModalData }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [dataForTable, setDataForTable] = useState([])
 
@@ -171,6 +230,10 @@ const Budget = ({ budgetModal }) => {
         setIsOpen(!isOpen)
     }
 
+    useEffect(() => {
+        handleModalData('budget', dataForTable)
+        console.log(dataForTable)
+    }, [dataForTable])
     return (
         <div>
             <h2>Budget</h2>

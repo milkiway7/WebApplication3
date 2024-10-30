@@ -120,7 +120,3 @@ export const ModalTable = ({ modalData, dataForTable }) => {
         </table>
     );
 }
-
-function removeItemFromTable(dataForTable) {
-
-}

@@ -1,4 +1,5 @@
-﻿using DataAccess.Models.Authentication;
+﻿using DataAccess.Models.AddProject;
+using DataAccess.Models.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace DataAccess
         { }
 
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<AddProjectModel> AddProjects { get; set; }
     }
 }
 
