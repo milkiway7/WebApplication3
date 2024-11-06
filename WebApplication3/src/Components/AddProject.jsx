@@ -2,70 +2,98 @@
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
 
-const AddProject = () => {
-    const [formData, setFormData] = useState({
-        projectName: '',
-        client: '',
-        shortDescription: '',
-        department: '',
-        process: '',
-        linkTeams: '',
-        projectCoordinator: '',
-        timesheetCode: '',
-        solutionArchitect: '',
-        projectTeam: '',
-        teamsChannelUrl:'',
-        projectStartDate:'',
-        projectEndDate:'',
-        completion:'',
-        deliverables: [],
-        budget: [],
-        supportingDocumentation:''
-    })
+    const AddProject = () => {
+        const [formData, setFormData] = useState({
+            status: 0,
+            projectName: '',
+            client: '',
+            shortDescription: '',
+            department: '',
+            process: '',
+            linkTeams: '',
+            projectCoordinator: '',
+            timesheetCode: '',
+            solutionArchitect: '',
+            projectTeam: '',
+            teamsChannelUrl:'',
+            projectStartDate: null,
+            projectEndDate: null,
+            completion:'',
+            deliverables: [],
+            budget: [],
+            supportingDocumentation:''
+        })
 
-    function handleDataChange(e) {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }
+        function handleDataChange(e) {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
 
-    function handleModalData(field, newData) {
-        setFormData((prevData) => ({
-            ...prevData,
-            [field]: newData
-        }))
-    }
+        function handleModalData(field, newData) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [field]: newData
+            }))
+        }
 
-    useEffect(() => { console.log(formData) }, [formData])
+        const handleSubmit = (e) => {
 
-    return (
-        <div className="container row">
-            <form className="col-9" method="post">
-                <GeneralInformation
-                    handleDataChange={handleDataChange}
-                    formData={ formData }
+            e.preventDefault();
+
+            setFormData((prevData) => ({
+                ...prevData,
+                status: prevData.status + 1
+            }))
+
+            fetch('/AddProject/AddProjectAsync', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json() })
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        };
+
+        return (
+            <div className="container row">
+                <form className="col-9" method="post" onSubmit={ handleSubmit }>
+                    <GeneralInformation
+                        handleDataChange={handleDataChange}
+                        formData={ formData }
+                        />
+                    <Deliverables
+                        deliverablesModal={addProjectConstants.deliverables}
+                        handleModalData={handleModalData}
                     />
-                <Deliverables
-                    deliverablesModal={addProjectConstants.deliverables}
-                    handleModalData={handleModalData}
-                />
-                <Budget
-                    budgetModal={addProjectConstants.budget}
-                    handleModalData={handleModalData} />
-                <ProjectDetails
-                    handleDataChange={handleDataChange}
-                    formData={formData}
-                />
-                <AdditionalInformation />
-                <div>
-                    <button type="submit">Add project</button>
-                </div>
-            </form>
-        </div>
-    )
-}
+                    <Budget
+                        budgetModal={addProjectConstants.budget}
+                        handleModalData={handleModalData} />
+                    <ProjectDetails
+                        handleDataChange={handleDataChange}
+                        formData={formData}
+                    />
+                    <AdditionalInformation />
+                    <div>
+                        <button type="submit">Add project</button>
+                    </div>
+                </form>
+            </div>
+        )
+    }
 
 
 const GeneralInformation = ({ handleDataChange, formData }) => {
@@ -232,7 +260,6 @@ const Budget = ({ budgetModal, handleModalData }) => {
 
     useEffect(() => {
         handleModalData('budget', dataForTable)
-        console.log(dataForTable)
     }, [dataForTable])
     return (
         <div>

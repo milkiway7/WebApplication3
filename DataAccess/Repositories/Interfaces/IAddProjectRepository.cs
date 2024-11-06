@@ -9,7 +9,7 @@ namespace DataAccess.Repositories.Interfaces
 {
     public interface IAddProjectRepository
     {
-        Task AddProjectAsync(AddProjectModel projectModel);
+        Task<bool> AddProjectAsync(AddProjectModel projectModel);
         Task SaveAsync();
     }
 }
