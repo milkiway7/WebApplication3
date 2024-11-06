@@ -5,23 +5,23 @@ import { addProjectConstants } from "../Constants/Constants";
     const AddProject = () => {
         const [formData, setFormData] = useState({
             status: 0,
-            projectName: '',
-            client: '',
-            shortDescription: '',
-            department: '',
-            process: '',
-            linkTeams: '',
-            projectCoordinator: '',
-            timesheetCode: '',
-            solutionArchitect: '',
-            projectTeam: '',
-            teamsChannelUrl:'',
+            projectName: null,
+            client: null,
+            shortDescription: null,
+            department: null,
+            process: null,
+            linkTeams: null,
+            projectCoordinator: null,
+            timesheetCode: null,
+            solutionArchitect: null,
+            projectTeam: null,
+            teamsChannelUrl: null,
             projectStartDate: null,
             projectEndDate: null,
-            completion:'',
-            deliverables: [],
-            budget: [],
-            supportingDocumentation:''
+            completion: null,
+            deliverables: null,
+            budget: null,
+            supportingDocumentation: null
         })
 
         function handleDataChange(e) {
