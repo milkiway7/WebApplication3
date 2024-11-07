@@ -2,7 +2,7 @@
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
 
-    const AddProject = () => {
+const AddProject = () => {
         const [formData, setFormData] = useState({
             status: 0,
             projectName: null,
@@ -40,13 +40,7 @@ import { addProjectConstants } from "../Constants/Constants";
         }
 
         const handleSubmit = (e) => {
-
-            e.preventDefault();
-
-            setFormData((prevData) => ({
-                ...prevData,
-                status: prevData.status + 1
-            }))
+            e.preventDefault()
 
             fetch('/AddProject/AddProjectAsync', {
                 method: 'POST',
@@ -62,6 +56,7 @@ import { addProjectConstants } from "../Constants/Constants";
                     return response.json() })
                 .then(data => {
                     console.log('Success:', data);
+                    console.log(formData.status)
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -69,8 +64,8 @@ import { addProjectConstants } from "../Constants/Constants";
         };
 
         return (
-            <div className="container row">
-                <form className="col-9" method="post" onSubmit={ handleSubmit }>
+            <div>
+                <form method="post" onSubmit={ handleSubmit }>
                     <GeneralInformation
                         handleDataChange={handleDataChange}
                         formData={ formData }
@@ -87,8 +82,8 @@ import { addProjectConstants } from "../Constants/Constants";
                         formData={formData}
                     />
                     <AdditionalInformation />
-                    <div>
-                        <button type="submit">Add project</button>
+                    <div className="">
+                        <button type="submit" onClick={() => setFormData(prevData => ({...prevData, status: prevData.status + 1})) }>Add project</button>
                     </div>
                 </form>
             </div>
@@ -98,7 +93,7 @@ import { addProjectConstants } from "../Constants/Constants";
 
 const GeneralInformation = ({ handleDataChange, formData }) => {
     return (
-        <div>
+        <div className="section">
             <h2>General information</h2>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>

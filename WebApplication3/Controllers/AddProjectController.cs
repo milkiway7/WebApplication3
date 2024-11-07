@@ -29,11 +29,12 @@ namespace WebApplication3.Controllers
         {
             if (data == null) return BadRequest(new { error = true, message = "Error: no data provided" });
 
+
             var success = await _addProjectRepository.AddProjectAsync(data);
 
             if (success)
             {
-                return Ok(new { success = true, message = $"Project {data.Project} has been saved", updatedData = data });
+                return Ok(new { success = true, message = $"Project {data.Project} has been saved"});
             }
             else
             {
