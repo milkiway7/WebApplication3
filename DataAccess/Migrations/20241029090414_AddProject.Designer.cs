@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241029090414_AddProject")]
+    partial class AddProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,77 +33,62 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BudgetJson")
+                    b.Property<string>("Budget")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Client")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "client");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Completion")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "completion");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeliverablesJson")
+                    b.Property<string>("DeliverablesInline")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Department")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "department");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "linkTeams");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Process")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "process");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Project")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "projectName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectCoordinator")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "projectCoordinator");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ProjectEndDate")
-                        .HasColumnType("datetime2")
-                        .HasAnnotation("Relational:JsonPropertyName", "projectEndDate");
+                    b.Property<string>("ProjectEndDate")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ProjectStartDate")
-                        .HasColumnType("datetime2")
-                        .HasAnnotation("Relational:JsonPropertyName", "projectStartDate");
+                    b.Property<string>("ProjectStartDate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectTeam")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "projectTeam");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "shortDescription");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SolutionArchitect")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "solutionArchitect");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("SupportingDocumentation")
-                        .HasColumnType("varbinary(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "supportingDocumentation");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("TeamsChannerUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "teamsChannelUrl");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TimesheetCode")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "timesheetCode");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

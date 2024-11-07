@@ -24,6 +24,7 @@ builder.Services.AddAuthentication(builder.Configuration["CookieName"]).AddCooki
 
 //Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAddProjectRepository, AddProjectRepository>();
 
 var app = builder.Build();
 
