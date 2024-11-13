@@ -94,7 +94,7 @@ const AddProject = () => {
 const GeneralInformation = ({ handleDataChange, formData }) => {
     return (
         <div className="section">
-            <h2>General information</h2>
+            <h3>General information</h3>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>
                 <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={ handleDataChange }></input>
@@ -143,7 +143,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
 const ProjectDetails = ({ handleDataChange, formData }) => {
     return (
         <div>
-            <h2>Project details</h2>
+            <h3>Project details</h3>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectCoordinator" className="mb-1">Project coordinator</label>
@@ -224,7 +224,7 @@ const Deliverables = ({ deliverablesModal, handleModalData }) => {
 
     return (
         <div>
-            <h2>Deliverables</h2>
+            <h3>Deliverables</h3>
             <div className="d-flex ">
                 <button type="button" className="ms-auto" onClick={showModal}>Deliverables</button>
             </div>
@@ -258,7 +258,7 @@ const Budget = ({ budgetModal, handleModalData }) => {
     }, [dataForTable])
     return (
         <div>
-            <h2>Budget</h2>
+            <h3>Budget</h3>
             <div className="d-flex ">
                 <button type="button" className="ms-auto" onClick={showModal}>Budget</button>
             </div>
@@ -279,7 +279,7 @@ const Budget = ({ budgetModal, handleModalData }) => {
 const AdditionalInformation = () => {
     return (
         <div>
-            <h2>Additional information</h2>
+            <h3>Additional information</h3>
             <div className="form-group">
                 <label for="supportingDocumentation" className="mb-1">Supporting documentation</label>
                 <input id="supportingDocumentation" type="file" className="form-control"></input>

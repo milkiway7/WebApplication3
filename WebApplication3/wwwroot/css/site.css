@@ -1,20 +1,28 @@
 :root {
     --bg-color: #FAFBFD;
     --primary-color: #FFFFFF;
+    --border-color: #D0D9E7;
 }
 /*=========================
     GENERAL
 ===========================*/
 html {
     font-size: 14px;
+    height: 100%;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-main {
-    background-color: var(--bg-color);
+body{
+    display: flex;
+    height: 100%;
+    overflow:hidden;
+}
+
+li{
+    list-style: none;
 }
 
 .section{
@@ -62,11 +70,92 @@ td {
     text-align: center;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
 .asp-summary-validation ul{
     list-style-type: none;
     padding-left:0;
 }
+/*=========================
+    SIDEBAR
+===========================*/
+#sidebar {
+    position: relative;
+    width: 280px;
+    background-color: var(--bg-color);
+    border-right: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
 
+.sidebar-open {
+    transform: translateX(0);
+}
+
+.sidebar-closed{
+    transform:translateX(-100%);
+    display: none;
+}
+
+.sidebar-top {
+    display: flex;
+    padding: 10px 20px 10px 20px;
+    align-items: center;
+}
+
+.logo{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    text-align: center;
+}
+.logo i{
+    margin-left: 15px;
+}
+
+/*=========================
+    GENERAL
+===========================*/
+#content {
+    flex-grow: 1;
+    background-color: var(--bg-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*=============================
+    TOPBAR
+=============================*/
+#topbar{
+    height:80px;
+    background-color: var(--bg-color);
+    padding: 10px 32px 10px 32px;
+}
+#topbar h3{
+    margin: 0;
+}
+.breadcrumbs{
+    display:flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.breadcrumbs li::before{
+    content:"/";
+    margin: 0 2px 0 5px;
+}
+
+.topbar-nav{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /*=============================
     MODAL
 =============================*/
@@ -92,6 +181,7 @@ td {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); 
 }
+
 .overlay.active {
     display: block;
 }
