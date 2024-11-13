@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models.AddProject;
 using DataAccess.Models.Authentication;
+using DataAccess.Models.BreadCrumbs;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,11 @@ namespace WebApplication3.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Breadcrumbs"] = new List<BreadCrumbsModel>()
+            {
+                new BreadCrumbsModel{Name="Add project", Controller="AddProject",Action="Index", IsActive=true }
+            };
+
             return View();
         }
 
