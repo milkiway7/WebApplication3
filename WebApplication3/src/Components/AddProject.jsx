@@ -82,14 +82,13 @@ const AddProject = () => {
                         formData={formData}
                     />
                     <AdditionalInformation />
-                    <div className="">
+                    <div className="form-buttons-list">
                         <button type="submit" onClick={() => setFormData(prevData => ({...prevData, status: prevData.status + 1})) }>Add project</button>
                     </div>
                 </form>
             </div>
         )
     }
-
 
 const GeneralInformation = ({ handleDataChange, formData }) => {
     return (
@@ -142,7 +141,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
 
 const ProjectDetails = ({ handleDataChange, formData }) => {
     return (
-        <div>
+        <div className="section">
             <h3>Project details</h3>
             <div className="row mb-2">
                 <div className="col-6 form-group">
@@ -223,7 +222,7 @@ const Deliverables = ({ deliverablesModal, handleModalData }) => {
     }, [dataForTable])
 
     return (
-        <div>
+        <div className="section">
             <h3>Deliverables</h3>
             <div className="d-flex ">
                 <button type="button" className="ms-auto" onClick={showModal}>Deliverables</button>
@@ -257,7 +256,7 @@ const Budget = ({ budgetModal, handleModalData }) => {
         handleModalData('budget', dataForTable)
     }, [dataForTable])
     return (
-        <div>
+        <div className="section">
             <h3>Budget</h3>
             <div className="d-flex ">
                 <button type="button" className="ms-auto" onClick={showModal}>Budget</button>
@@ -278,7 +277,7 @@ const Budget = ({ budgetModal, handleModalData }) => {
 
 const AdditionalInformation = () => {
     return (
-        <div>
+        <div className="section">
             <h3>Additional information</h3>
             <div className="form-group">
                 <label for="supportingDocumentation" className="mb-1">Supporting documentation</label>
