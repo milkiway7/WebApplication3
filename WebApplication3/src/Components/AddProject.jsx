@@ -1,9 +1,12 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
+import { timeWithoutSeconds } from "../Helpers/Helpers"
 
 const AddProject = () => {
-        const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
+            id: 0,
+            createdAt: null,
             status: 0,
             projectName: null,
             client: null,
@@ -55,8 +58,17 @@ const AddProject = () => {
                     }
                     return response.json() })
                 .then(data => {
-                    console.log('Success:', data);
-                    console.log(formData.status)
+                    if (data.success) {
+                        setFormData(prevData => ({
+                            ...prevData,
+                            id: data.id,
+                        }))
+                    }
+
+
+                    console.log(data)
+                    console.log(formData)
+
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -65,7 +77,8 @@ const AddProject = () => {
 
         return (
             <div>
-                <form method="post" onSubmit={ handleSubmit }>
+                <form method="post" onSubmit={handleSubmit}>
+                    {formData.status != 0 && <SystemInformation formData={ formData } />}
                     <GeneralInformation
                         handleDataChange={handleDataChange}
                         formData={ formData }
@@ -83,12 +96,38 @@ const AddProject = () => {
                     />
                     <AdditionalInformation />
                     <div className="form-buttons-list">
-                        <button type="submit" onClick={() => setFormData(prevData => ({...prevData, status: prevData.status + 1})) }>Add project</button>
+                        <button type="submit" onClick={() => setFormData(prevData => ({ ...prevData, status: prevData.status + 1, createdAt: timeWithoutSeconds() })) }>Add project</button>
                     </div>
                 </form>
             </div>
         )
-    }
+}
+
+const SystemInformation = ({ formData }) => {
+    return (
+        <div className="section">
+            <h3>System information</h3>
+            <div className="row mb-2">
+                <div className="form-group col-3">
+                    <label for="id" className="mb-1">ID</label>
+                    <input id="id" type="number" className="form-control" name="id" value={formData.id} readOnly></input>
+                </div>
+                <div className="form-group col-3">
+                    <label for="createdAt" className="mb-1">Created at</label>
+                    <input id="createdAt" type="datetime-local" className="form-control" name="createdAt" value={formData.createdAt} readOnly></input>
+                </div>
+                {/*<div className="form-group col-3">*/}
+                {/*    <label for="id" className="mb-1">Created by</label>*/}
+                {/*    <input id="id" type="number" className="form-control" name="id" value={formData.id}></input>*/}
+                {/*</div>*/}
+                <div className="form-group col-3">
+                    <label for="status" className="mb-1">Status </label>
+                    <input id="status" type="number" className="form-control" name="status" value={formData.status} readOnly></input>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const GeneralInformation = ({ handleDataChange, formData }) => {
     return (
