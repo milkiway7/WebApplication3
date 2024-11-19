@@ -7,6 +7,7 @@ const AddProject = () => {
     const [formData, setFormData] = useState({
             id: 0,
             createdAt: null,
+            createdBy: null,
             status: 0,
             projectName: null,
             client: null,
@@ -62,13 +63,11 @@ const AddProject = () => {
                         setFormData(prevData => ({
                             ...prevData,
                             id: data.id,
+                            status: data.status,
+                            createdBy: data.createdBy,
+                            createdAt: timeWithoutSeconds(data.createdAt)
                         }))
                     }
-
-
-                    console.log(data)
-                    console.log(formData)
-
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -78,7 +77,7 @@ const AddProject = () => {
         return (
             <div>
                 <form method="post" onSubmit={handleSubmit}>
-                    {formData.status != 0 && <SystemInformation formData={ formData } />}
+                    {formData.status != 0 && <SystemInformation formData={formData} />}
                     <GeneralInformation
                         handleDataChange={handleDataChange}
                         formData={ formData }
@@ -96,7 +95,7 @@ const AddProject = () => {
                     />
                     <AdditionalInformation />
                     <div className="form-buttons-list">
-                        <button type="submit" onClick={() => setFormData(prevData => ({ ...prevData, status: prevData.status + 1, createdAt: timeWithoutSeconds() })) }>Add project</button>
+                        <button type="submit" >Add project</button>
                     </div>
                 </form>
             </div>
@@ -116,10 +115,10 @@ const SystemInformation = ({ formData }) => {
                     <label for="createdAt" className="mb-1">Created at</label>
                     <input id="createdAt" type="datetime-local" className="form-control" name="createdAt" value={formData.createdAt} readOnly></input>
                 </div>
-                {/*<div className="form-group col-3">*/}
-                {/*    <label for="id" className="mb-1">Created by</label>*/}
-                {/*    <input id="id" type="number" className="form-control" name="id" value={formData.id}></input>*/}
-                {/*</div>*/}
+                <div className="form-group col-3">
+                    <label for="createdBy" className="mb-1">Created by</label>
+                    <input id="createdBy" type="text" className="form-control" name="createdBy" value={formData.createdBy} readOnly></input>
+                </div>
                 <div className="form-group col-3">
                     <label for="status" className="mb-1">Status </label>
                     <input id="status" type="number" className="form-control" name="status" value={formData.status} readOnly></input>

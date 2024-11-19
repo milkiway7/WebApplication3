@@ -1,6 +1,4 @@
-﻿export function timeWithoutSeconds() {
-    const date = new Date();
-    date.setMilliseconds(0);
+﻿export function timeWithoutSeconds(date) {
     
-    return date.toISOString().slice(0, 19);
+    return date.slice(0, 16);
 }
