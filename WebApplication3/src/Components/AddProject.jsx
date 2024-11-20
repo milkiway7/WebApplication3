@@ -5,101 +5,100 @@ import { timeWithoutSeconds } from "../Helpers/Helpers"
 
 const AddProject = () => {
     const [formData, setFormData] = useState({
-            id: 0,
-            createdAt: null,
-            createdBy: null,
-            status: 0,
-            projectName: null,
-            client: null,
-            shortDescription: null,
-            department: null,
-            process: null,
-            linkTeams: null,
-            projectCoordinator: null,
-            timesheetCode: null,
-            solutionArchitect: null,
-            projectTeam: null,
-            teamsChannelUrl: null,
-            projectStartDate: null,
-            projectEndDate: null,
-            completion: null,
-            deliverables: null,
-            budget: null,
-            supportingDocumentation: null
+        id: 0,
+        createdAt: null,
+        createdBy: null,
+        status: addProjectConstants.statuses.emptyForm,
+        projectName: null,
+        client: "",
+        shortDescription: null,
+        department: "",
+        process: "",
+        linkTeams: null,
+        projectCoordinator: "",
+        timesheetCode: "",
+        solutionArchitect: "",
+        projectTeam: "",
+        teamsChannelUrl: null,
+        projectStartDate: null,
+        projectEndDate: null,
+        completion: null,
+        deliverables: null,
+        budget: null,
+        supportingDocumentation: null
+    })
+
+    function handleDataChange(e) {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    }
+
+    function handleModalData(field, newData) {
+        setFormData((prevData) => ({
+            ...prevData,
+            [field]: newData
+        }))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        fetch('/AddProject/AddProjectAsync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
         })
-
-        function handleDataChange(e) {
-            const { name, value } = e.target;
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        }
-
-        function handleModalData(field, newData) {
-            setFormData((prevData) => ({
-                ...prevData,
-                [field]: newData
-            }))
-        }
-
-        const handleSubmit = (e) => {
-            e.preventDefault()
-
-            fetch('/AddProject/AddProjectAsync', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json()
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json() })
-                .then(data => {
-                    if (data.success) {
-                        setFormData(prevData => ({
-                            ...prevData,
-                            id: data.id,
-                            status: data.status,
-                            createdBy: data.createdBy,
-                            createdAt: timeWithoutSeconds(data.createdAt)
-                        }))
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-        };
+            .then(data => {
+                if (data.success) {
+                    setFormData(prevData => ({
+                        ...prevData,
+                        id: data.id,
+                        status: data.status,
+                        createdBy: data.createdBy,
+                        createdAt: timeWithoutSeconds(data.createdAt)
+                    }))
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    };
 
-        return (
-            <div>
-                <form method="post" onSubmit={handleSubmit}>
-                    {formData.status != 0 && <SystemInformation formData={formData} />}
-                    <GeneralInformation
-                        handleDataChange={handleDataChange}
-                        formData={ formData }
-                        />
-                    <Deliverables
-                        deliverablesModal={addProjectConstants.deliverables}
-                        handleModalData={handleModalData}
-                    />
-                    <Budget
-                        budgetModal={addProjectConstants.budget}
-                        handleModalData={handleModalData} />
-                    <ProjectDetails
-                        handleDataChange={handleDataChange}
-                        formData={formData}
-                    />
-                    <AdditionalInformation />
-                    <div className="form-buttons-list">
-                        <button type="submit" >Add project</button>
-                    </div>
-                </form>
-            </div>
-        )
+    return (
+        <div>
+            <form method="post" onSubmit={handleSubmit}>
+                {formData.status != addProjectConstants.statuses.emptyForm && <SystemInformation formData={formData} />}
+                <GeneralInformation
+                    handleDataChange={handleDataChange}
+                    formData={formData}
+                />
+                {formData.status != addProjectConstants.statuses.emptyForm && <Deliverables
+                    deliverablesModal={addProjectConstants.deliverables}
+                    handleModalData={handleModalData}
+                />}
+                {formData.status != addProjectConstants.statuses.emptyForm && <Budget
+                    budgetModal={addProjectConstants.budget}
+                    handleModalData={handleModalData} />}
+                {formData.status != addProjectConstants.statuses.emptyForm && <ProjectDetails
+                    handleDataChange={handleDataChange}
+                    formData={formData}
+                />}
+                <AdditionalInformation />
+                <FormButtons status={formData.status}/>
+            </form>
+        </div>
+    )
 }
 
 const SystemInformation = ({ formData }) => {
@@ -134,7 +133,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
             <h3>General information</h3>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>
-                <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={ handleDataChange }></input>
+                <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={handleDataChange}></input>
             </div>
             <div className="form-group mb-2">
                 <label for="client" className="mb-1">Client</label>
@@ -147,7 +146,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
             </div>
             <div className="form-group mb-2">
                 <label for="shortDescription" className="mb-1">Short desctiption</label>
-                <input id="shortDescription" type="text" className="form-control" name="shortDescription" value={formData.shortDescription} onChange={handleDataChange }></input>
+                <input id="shortDescription" type="text" className="form-control" name="shortDescription" value={formData.shortDescription} onChange={handleDataChange}></input>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
@@ -171,7 +170,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
             </div>
             <div className="form-group mb-2">
                 <label for="link" className="mb-1">Link</label>
-                <input id="link" type="text" className="form-control" name="link" value={formData.link} onChange={handleDataChange }></input>
+                <input id="link" type="text" className="form-control" name="link" value={formData.link} onChange={handleDataChange}></input>
             </div>
         </div>
     )
@@ -184,7 +183,7 @@ const ProjectDetails = ({ handleDataChange, formData }) => {
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectCoordinator" className="mb-1">Project coordinator</label>
-                    <select id="projectCoordinator" className="form-select" name="projectCoordinator" value={formData.projectCoordinator} onChange={handleDataChange }>
+                    <select id="projectCoordinator" className="form-select" name="projectCoordinator" value={formData.projectCoordinator} onChange={handleDataChange}>
                         <option value="" disabled>Choose...</option>
                         <option value="Project 1">Project 1</option>
                         <option value="Project 2">Project 2</option>
@@ -263,7 +262,7 @@ const Deliverables = ({ deliverablesModal, handleModalData }) => {
         <div className="section">
             <h3>Deliverables</h3>
             <div className="d-flex ">
-                <button type="button" className="ms-auto" onClick={showModal}>Deliverables</button>
+                <button type="button" onClick={showModal}>Deliverables</button>
             </div>
             {isOpen && <Modal
                 isOpen={isOpen}
@@ -297,7 +296,7 @@ const Budget = ({ budgetModal, handleModalData }) => {
         <div className="section">
             <h3>Budget</h3>
             <div className="d-flex ">
-                <button type="button" className="ms-auto" onClick={showModal}>Budget</button>
+                <button type="button" onClick={showModal}>Budget</button>
             </div>
             {isOpen && <Modal
                 isOpen={isOpen}
@@ -321,6 +320,37 @@ const AdditionalInformation = () => {
                 <label for="supportingDocumentation" className="mb-1">Supporting documentation</label>
                 <input id="supportingDocumentation" type="file" className="form-control"></input>
             </div>
+        </div>
+    )
+}
+
+const FormButtons = ({ status }) => {
+    console.log(status)
+    const renderButtons = () => {
+        switch (status) {
+            case addProjectConstants.statuses.emptyForm:
+                return <div className="form-buttons-list">
+                    <button type="submit" >Add project</button>
+                </div>
+                break;
+            case addProjectConstants.statuses.newItem:
+                return (<div className="form-buttons-list">
+                    <button type="submit" >Reject</button>
+                    <button type="submit" >Send to correction</button>
+                    <button type="submit" >Approve</button>
+                </div>)
+                break;
+            case addProjectConstants.statuses.correction:
+                return (<div className="form-buttons-list">
+                    <button type="submit" >Send for approval</button>
+                </div>)
+                break;
+        }
+    }
+
+    return (
+        <div>
+            {renderButtons() }
         </div>
     )
 }
