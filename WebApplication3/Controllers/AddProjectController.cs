@@ -44,6 +44,7 @@ namespace WebApplication3.Controllers
 
             if (user != null) {
                 data.CreatedBy = user.Id;
+                data.CreatedByEmail = user.EmailAddress;
                 data.Status = AddProjectConstants.Statuses.NewItem;
                 data.CreatedAt = DateTime.Now;
 
@@ -53,7 +54,7 @@ namespace WebApplication3.Controllers
 
                 if (success)
                 {
-                    return Ok(new { success = true, message = $"Project {data.Project} has been saved", id = data.Id, createdBy = email, createdAt = data.CreatedAt, status = data.Status });
+                    return Ok(new { success = true, message = $"Project {data.Project} has been saved", id = data.Id, createdBy = data.CreatedBy, createdAt = data.CreatedAt, status = data.Status, createdByEmail = email });
                 }
                 else
                 {

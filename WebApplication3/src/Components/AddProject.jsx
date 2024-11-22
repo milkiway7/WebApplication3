@@ -8,6 +8,7 @@ const AddProject = () => {
         id: 0,
         createdAt: null,
         createdBy: null,
+        createdByEmail: null,
         status: addProjectConstants.statuses.emptyForm,
         projectName: null,
         client: "",
@@ -136,8 +137,8 @@ const SystemInformation = ({ formData }) => {
                     <input id="createdAt" type="datetime-local" className="form-control" name="createdAt" value={formData.createdAt} readOnly></input>
                 </div>
                 <div className="form-group col-3">
-                    <label for="createdBy" className="mb-1">Created by</label>
-                    <input id="createdBy" type="text" className="form-control" name="createdBy" value={formData.createdBy} readOnly></input>
+                    <label for="createdByEmail" className="mb-1">Created by</label>
+                    <input id="createdByEmail" type="text" className="form-control" name="createdByEmail" value={formData.createdByEmail} readOnly></input>
                 </div>
                 <div className="form-group col-3">
                     <label for="status" className="mb-1">Status </label>

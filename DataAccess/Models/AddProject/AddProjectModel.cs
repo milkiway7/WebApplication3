@@ -19,6 +19,8 @@ namespace DataAccess.Models.AddProject
         public DateTime? CreatedAt { get; set; }
         [JsonPropertyName("createdBy")]
         public Guid? CreatedBy { get; set; }
+        [JsonPropertyName("createdByEmail")]
+        public string? CreatedByEmail { get; set; }
         [JsonPropertyName("projectName")]
         public string? Project {  get; set; }
         [JsonPropertyName("client")]

@@ -24,7 +24,8 @@ export function createNewItemPOST(formData, setFormData) {
                     id: data.id,
                     status: data.status,
                     createdBy: data.createdBy,
-                    createdAt: timeWithoutSeconds(data.createdAt)
+                    createdAt: timeWithoutSeconds(data.createdAt),
+                    createdByEmail: data.createdByEmail
                 }))
             }
         })
