@@ -40,6 +40,21 @@ namespace DataAccess.Repositories
 
         }
 
+        public async Task<bool> UpdateProjectAsync(AddProjectModel projectModel)
+        {
+            try
+            {
+                _context.AddProjects.Update(projectModel);
+                await SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Project not updated: {projectModel.Project}");
+                return false;
+            }
+        }
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();

@@ -1,4 +1,5 @@
-﻿using DataAccess.Models.AddProject;
+﻿using DataAccess.Constants;
+using DataAccess.Models.AddProject;
 using DataAccess.Models.Authentication;
 using DataAccess.Models.BreadCrumbs;
 using DataAccess.Repositories.Interfaces;
@@ -43,7 +44,7 @@ namespace WebApplication3.Controllers
 
             if (user != null) {
                 data.CreatedBy = user.Id;
-                data.Status = 1;
+                data.Status = AddProjectConstants.Statuses.NewItem;
                 data.CreatedAt = DateTime.Now;
 
                 bool success = await _addProjectRepository.AddProjectAsync(data);
@@ -64,6 +65,26 @@ namespace WebApplication3.Controllers
             _logger.LogError("User not found");
 
             return StatusCode(500, new { error = true, message = $"User for created by field not found" });
+        }
+
+        [Route("AddProject/RejectProjectAsync")]
+        [HttpPut]
+        public async Task<IActionResult> RejectProjectAsync([FromBody] AddProjectModel data)
+        {
+            if (data == null) return BadRequest(new { error = true, message = "Error: no data provided" });
+
+            data.Status = AddProjectConstants.Statuses.Rejected;
+            bool success = await _addProjectRepository.UpdateProjectAsync(data);
+
+            if (success)
+            {
+                return Ok(new { success = true, message = "Project has been rejected", status = data.Status });
+            }
+            else
+            {
+                return StatusCode(500, new { error = true, message = $"Internal server error, project {data.Project} couldn't be rejected" });
+            }
+
         }
     }
 }

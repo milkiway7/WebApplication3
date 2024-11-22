@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
-import { timeWithoutSeconds } from "../Helpers/Helpers"
+import { createNewItemPOST, rejectItemPUT } from "../Helpers/Helpers"
 
 const AddProject = () => {
     const [formData, setFormData] = useState({
@@ -27,7 +27,12 @@ const AddProject = () => {
         budget: null,
         supportingDocumentation: null
     })
+    const isReadOnly = formData.status == addProjectConstants.statuses.rejected;
 
+    useEffect(() => {
+        console.log(formData)
+        console.log("USE EFFECT")
+    },[formData])
     function handleDataChange(e) {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -46,33 +51,45 @@ const AddProject = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        fetch('/AddProject/AddProjectAsync', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json()
-            })
-            .then(data => {
-                if (data.success) {
-                    setFormData(prevData => ({
-                        ...prevData,
-                        id: data.id,
-                        status: data.status,
-                        createdBy: data.createdBy,
-                        createdAt: timeWithoutSeconds(data.createdAt)
-                    }))
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        const action = e.nativeEvent.submitter.value;
+
+        console.log(action)
+
+        switch (action) {
+            case 'submit':
+                createNewItemPOST(formData, setFormData);
+                //fetch('/AddProject/AddProjectAsync', {
+                //    method: 'POST',
+                //    headers: {
+                //        'Content-Type': 'application/json',
+                //    },
+                //    body: JSON.stringify(formData),
+                //})
+                //    .then(response => {
+                //        if (!response.ok) {
+                //            throw new Error(`HTTP error, project couldn't be processed / created'. Status: ${response.status}`);
+                //        }
+                //        return response.json()
+                //    })
+                //    .then(data => {
+                //        if (data.success) {
+                //            setFormData(prevData => ({
+                //                ...prevData,
+                //                id: data.id,
+                //                status: data.status,
+                //                createdBy: data.createdBy,
+                //                createdAt: timeWithoutSeconds(data.createdAt)
+                //            }))
+                //        }
+                //    })
+                //    .catch((error) => {
+                //        console.error('Error:', error);
+                //    });
+                break;
+            case 'reject':
+                rejectItemPUT(formData, setFormData);
+                break;
+        }
     };
 
     return (
@@ -82,19 +99,23 @@ const AddProject = () => {
                 <GeneralInformation
                     handleDataChange={handleDataChange}
                     formData={formData}
+                    isReadOnly={isReadOnly}
                 />
                 {formData.status != addProjectConstants.statuses.emptyForm && <Deliverables
                     deliverablesModal={addProjectConstants.deliverables}
                     handleModalData={handleModalData}
+                    isReadOnly={isReadOnly}
                 />}
                 {formData.status != addProjectConstants.statuses.emptyForm && <Budget
                     budgetModal={addProjectConstants.budget}
-                    handleModalData={handleModalData} />}
+                    handleModalData={handleModalData}
+                    isReadOnly={isReadOnly}/>}
                 {formData.status != addProjectConstants.statuses.emptyForm && <ProjectDetails
                     handleDataChange={handleDataChange}
                     formData={formData}
+                    isReadOnly={isReadOnly}
                 />}
-                <AdditionalInformation />
+                <AdditionalInformation isReadOnly={isReadOnly} />
                 <FormButtons status={formData.status}/>
             </form>
         </div>
@@ -127,17 +148,17 @@ const SystemInformation = ({ formData }) => {
     )
 }
 
-const GeneralInformation = ({ handleDataChange, formData }) => {
+const GeneralInformation = ({ handleDataChange, formData, isReadOnly }) => {
     return (
         <div className="section">
             <h3>General information</h3>
             <div className="form-group mb-2">
                 <label for="projectName" className="mb-1">Project</label>
-                <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={handleDataChange}></input>
+                <input id="projectName" type="text" className="form-control" placeholder="Project name" name="projectName" value={formData.projectName} onChange={handleDataChange} readOnly={isReadOnly}></input>
             </div>
             <div className="form-group mb-2">
                 <label for="client" className="mb-1">Client</label>
-                <select id="client" class="form-select" name="client" value={formData.client} onChange={handleDataChange}>
+                <select id="client" class="form-select" name="client" value={formData.client} onChange={handleDataChange} disabled={isReadOnly}>
                     <option value="" disabled>Choose...</option>
                     <option value="Client 1">Client 1</option>
                     <option value="Client 2">Client 2</option>
@@ -146,12 +167,12 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
             </div>
             <div className="form-group mb-2">
                 <label for="shortDescription" className="mb-1">Short desctiption</label>
-                <input id="shortDescription" type="text" className="form-control" name="shortDescription" value={formData.shortDescription} onChange={handleDataChange}></input>
+                <input id="shortDescription" type="text" className="form-control" name="shortDescription" value={formData.shortDescription} onChange={handleDataChange} readOnly={isReadOnly}></input>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="department" className="mb-1">Department</label>
-                    <select id="department" className="form-select" name="department" value={formData.department} onChange={handleDataChange}>
+                    <select id="department" className="form-select" name="department" value={formData.department} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Department 1">Department 1</option>
                         <option value="Department 2">Department 2</option>
@@ -160,7 +181,7 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
                 </div>
                 <div className="col-6 form-group">
                     <label for="process" className="mb-1">Process</label>
-                    <select id="process" className="form-select" name="process" value={formData.process} onChange={handleDataChange}>
+                    <select id="process" className="form-select" name="process" value={formData.process} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Process 1">Process 1</option>
                         <option value="Process2">Process 2</option>
@@ -170,20 +191,20 @@ const GeneralInformation = ({ handleDataChange, formData }) => {
             </div>
             <div className="form-group mb-2">
                 <label for="link" className="mb-1">Link</label>
-                <input id="link" type="text" className="form-control" name="link" value={formData.link} onChange={handleDataChange}></input>
+                <input id="link" type="text" className="form-control" name="link" value={formData.link} onChange={handleDataChange} readOnly={isReadOnly}></input>
             </div>
         </div>
     )
 }
 
-const ProjectDetails = ({ handleDataChange, formData }) => {
+const ProjectDetails = ({ handleDataChange, formData, isReadOnly }) => {
     return (
         <div className="section">
             <h3>Project details</h3>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectCoordinator" className="mb-1">Project coordinator</label>
-                    <select id="projectCoordinator" className="form-select" name="projectCoordinator" value={formData.projectCoordinator} onChange={handleDataChange}>
+                    <select id="projectCoordinator" className="form-select" name="projectCoordinator" value={formData.projectCoordinator} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Project 1">Project 1</option>
                         <option value="Project 2">Project 2</option>
@@ -192,7 +213,7 @@ const ProjectDetails = ({ handleDataChange, formData }) => {
                 </div>
                 <div className="col-6 form-group">
                     <label for="timesheetCode" className="mb-1">Timesheet code</label>
-                    <select id="timesheetCode" className="form-select" name="timesheetCode" value={formData.timesheetCode} onChange={handleDataChange}>
+                    <select id="timesheetCode" className="form-select" name="timesheetCode" value={formData.timesheetCode} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Code 1">Code 1</option>
                         <option value="Code 2">Code 2</option>
@@ -203,7 +224,7 @@ const ProjectDetails = ({ handleDataChange, formData }) => {
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="solutionArchitect" className="mb-1">Solution architect</label>
-                    <select id="solutionArchitect" className="form-select" name="solutionArchitect" value={formData.solutionArchitect} onChange={handleDataChange}>
+                    <select id="solutionArchitect" className="form-select" name="solutionArchitect" value={formData.solutionArchitect} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Architect 1">Architect 1</option>
                         <option value="Architect 2">Architect 2</option>
@@ -212,7 +233,7 @@ const ProjectDetails = ({ handleDataChange, formData }) => {
                 </div>
                 <div className="col-6 form-group">
                     <label for="projectTeam" className="mb-1">Project team</label>
-                    <select id="projectTeam" className="form-select" name="projectTeam" value={formData.projectTeam} onChange={handleDataChange}>
+                    <select id="projectTeam" className="form-select" name="projectTeam" value={formData.projectTeam} onChange={handleDataChange} disabled={isReadOnly}>
                         <option value="" disabled>Choose...</option>
                         <option value="Project 1">Project 1</option>
                         <option value="Project 2">Project 2</option>
@@ -222,29 +243,29 @@ const ProjectDetails = ({ handleDataChange, formData }) => {
             </div>
             <div className="form-group mb-2">
                 <label for="linkTeams" className="mb-1">Teams channel URL</label>
-                <input id="linkTeams" type="text" className="form-control" name="teamsChannelUrl" value={formData.teamsChannelUrl} onChange={handleDataChange}></input>
+                <input id="linkTeams" type="text" className="form-control" name="teamsChannelUrl" value={formData.teamsChannelUrl} onChange={handleDataChange} readOnly={isReadOnly}></input>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="projectStartDate" className="mb-1">Project start date</label>
-                    <input id="projectStartDate" type="datetime-local" className="form-control" name="projectStartDate" value={formData.projectStartDate} onChange={handleDataChange}></input>
+                    <input id="projectStartDate" type="datetime-local" className="form-control" name="projectStartDate" value={formData.projectStartDate} onChange={handleDataChange} readOnly={isReadOnly}></input>
                 </div>
                 <div className="col-6 form-group">
                     <label for="projectEndDate" className="mb-1">Project end date</label>
-                    <input id="projectEndDate" type="datetime-local" className="form-control" name="projectEndDate" value={formData.projectEndDate} onChange={handleDataChange}></input>
+                    <input id="projectEndDate" type="datetime-local" className="form-control" name="projectEndDate" value={formData.projectEndDate} onChange={handleDataChange} readOnly={isReadOnly}></input>
                 </div>
             </div>
             <div className="row mb-2">
                 <div className="col-6 form-group">
                     <label for="completion" className="mb-1">Completion (%)</label>
-                    <input id="completion" type="text" className="form-control" name="completion" value={formData.completion} onChange={handleDataChange}></input>
+                    <input id="completion" type="text" className="form-control" name="completion" value={formData.completion} onChange={handleDataChange} readOnly={isReadOnly}></input>
                 </div>
             </div>
         </div>
     )
 }
 
-const Deliverables = ({ deliverablesModal, handleModalData }) => {
+const Deliverables = ({ deliverablesModal, handleModalData, isReadOnly }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [dataForTable, setDataForTable] = useState([])
 
@@ -261,9 +282,9 @@ const Deliverables = ({ deliverablesModal, handleModalData }) => {
     return (
         <div className="section">
             <h3>Deliverables</h3>
-            <div className="d-flex ">
+            {!isReadOnly && <div className="d-flex ">
                 <button type="button" onClick={showModal}>Deliverables</button>
-            </div>
+            </div>}
             {isOpen && <Modal
                 isOpen={isOpen}
                 showModal={showModal}
@@ -278,7 +299,7 @@ const Deliverables = ({ deliverablesModal, handleModalData }) => {
     )
 }
 
-const Budget = ({ budgetModal, handleModalData }) => {
+const Budget = ({ budgetModal, handleModalData, isReadOnly }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [dataForTable, setDataForTable] = useState([])
 
@@ -295,9 +316,9 @@ const Budget = ({ budgetModal, handleModalData }) => {
     return (
         <div className="section">
             <h3>Budget</h3>
-            <div className="d-flex ">
+            {!isReadOnly && <div className="d-flex ">
                 <button type="button" onClick={showModal}>Budget</button>
-            </div>
+            </div>}
             {isOpen && <Modal
                 isOpen={isOpen}
                 showModal={showModal}
@@ -312,30 +333,29 @@ const Budget = ({ budgetModal, handleModalData }) => {
     )
 }
 
-const AdditionalInformation = () => {
+const AdditionalInformation = ({ isReadOnly }) => {
     return (
         <div className="section">
             <h3>Additional information</h3>
             <div className="form-group">
                 <label for="supportingDocumentation" className="mb-1">Supporting documentation</label>
-                <input id="supportingDocumentation" type="file" className="form-control"></input>
+                <input id="supportingDocumentation" type="file" className="form-control" readOnly={isReadOnly}></input>
             </div>
         </div>
     )
 }
 
 const FormButtons = ({ status }) => {
-    console.log(status)
     const renderButtons = () => {
         switch (status) {
             case addProjectConstants.statuses.emptyForm:
                 return <div className="form-buttons-list">
-                    <button type="submit" >Add project</button>
+                    <button type="submit" name="action" value="submit">Add project</button>
                 </div>
                 break;
             case addProjectConstants.statuses.newItem:
                 return (<div className="form-buttons-list">
-                    <button type="submit" >Reject</button>
+                    <button type="submit" name="action" value="reject">Reject</button>
                     <button type="submit" >Send to correction</button>
                     <button type="submit" >Approve</button>
                 </div>)
