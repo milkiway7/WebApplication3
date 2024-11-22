@@ -2,6 +2,26 @@
 
     return date.slice(0, 16);
 }
+
+export function mapStatuses(statusNumber) {
+    switch (statusNumber) {
+        case 1:
+            return "New item"
+            break;
+        case 2:
+            return "Correction"
+            break;
+        case 3:
+            return "Rejected"
+            break;
+        case 4:
+            return "Completed"
+            break;
+        default:
+            return "Unknown"
+    }
+}
+
 export function createNewItemPOST(formData, setFormData) {
     console.log(formData)
     fetch('/AddProject/AddProjectAsync', {

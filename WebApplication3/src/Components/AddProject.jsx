@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
-import { createNewItemPOST, rejectItemPUT } from "../Helpers/Helpers"
+import { createNewItemPOST, rejectItemPUT, mapStatuses } from "../Helpers/Helpers"
 
 const AddProject = () => {
     const [formData, setFormData] = useState({
@@ -142,7 +142,7 @@ const SystemInformation = ({ formData }) => {
                 </div>
                 <div className="form-group col-3">
                     <label for="status" className="mb-1">Status </label>
-                    <input id="status" type="number" className="form-control" name="status" value={formData.status} readOnly></input>
+                    <input id="status" type="text" className="form-control" name="status" value={mapStatuses(formData.status)} readOnly></input>
                 </div>
             </div>
         </div>
