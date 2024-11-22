@@ -28,7 +28,9 @@ const AddProject = () => {
         budget: null,
         supportingDocumentation: null
     })
-    const isReadOnly = formData.status == addProjectConstants.statuses.rejected || addProjectConstants.statuses.newItem || addProjectConstants.statuses.created;
+    const isReadOnly = formData.status == addProjectConstants.statuses.rejected ||
+                    formData.status == addProjectConstants.statuses.newItem ||
+                    formData.status == addProjectConstants.statuses.created;
 
     useEffect(() => {
         console.log(formData)
@@ -59,33 +61,6 @@ const AddProject = () => {
         switch (action) {
             case 'submit':
                 createNewItemPOST(formData, setFormData);
-                //fetch('/AddProject/AddProjectAsync', {
-                //    method: 'POST',
-                //    headers: {
-                //        'Content-Type': 'application/json',
-                //    },
-                //    body: JSON.stringify(formData),
-                //})
-                //    .then(response => {
-                //        if (!response.ok) {
-                //            throw new Error(`HTTP error, project couldn't be processed / created'. Status: ${response.status}`);
-                //        }
-                //        return response.json()
-                //    })
-                //    .then(data => {
-                //        if (data.success) {
-                //            setFormData(prevData => ({
-                //                ...prevData,
-                //                id: data.id,
-                //                status: data.status,
-                //                createdBy: data.createdBy,
-                //                createdAt: timeWithoutSeconds(data.createdAt)
-                //            }))
-                //        }
-                //    })
-                //    .catch((error) => {
-                //        console.error('Error:', error);
-                //    });
                 break;
             case 'reject':
                 rejectItemPUT(formData, setFormData);
