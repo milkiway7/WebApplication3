@@ -28,7 +28,7 @@ const AddProject = () => {
         budget: null,
         supportingDocumentation: null
     })
-    const isReadOnly = formData.status == addProjectConstants.statuses.rejected;
+    const isReadOnly = formData.status == addProjectConstants.statuses.rejected || addProjectConstants.statuses.newItem || addProjectConstants.statuses.created;
 
     useEffect(() => {
         console.log(formData)

@@ -15,7 +15,7 @@ export function mapStatuses(statusNumber) {
             return "Rejected"
             break;
         case 4:
-            return "Completed"
+            return "Created"
             break;
         default:
             return "Unknown"
