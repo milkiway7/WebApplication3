@@ -44,6 +44,13 @@
                 options: null
             }
         ]
+    },
+    statuses: {
+        emptyForm: 0,
+        newItem: 1,
+        correction: 2,
+        rejected: 3,
+        created: 4
     }
 }
 
