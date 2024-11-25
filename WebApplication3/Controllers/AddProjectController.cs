@@ -45,7 +45,7 @@ namespace WebApplication3.Controllers
             if (user != null) {
                 data.CreatedBy = user.Id;
                 data.CreatedByEmail = user.EmailAddress;
-                data.Status = AddProjectConstants.Statuses.NewItem;
+                //data.Status = AddProjectConstants.Statuses.NewItem;
                 data.CreatedAt = DateTime.Now;
 
                 bool success = await _addProjectRepository.AddProjectAsync(data);
@@ -68,13 +68,12 @@ namespace WebApplication3.Controllers
             return StatusCode(500, new { error = true, message = $"User for created by field not found" });
         }
 
-        [Route("AddProject/RejectProjectAsync")]
+        [Route("AddProject/UpdateFormStatus")]
         [HttpPut]
-        public async Task<IActionResult> RejectProjectAsync([FromBody] AddProjectModel data)
+        public async Task<IActionResult> UpdateFormStatus([FromBody] AddProjectModel data)
         {
             if (data == null) return BadRequest(new { error = true, message = "Error: no data provided" });
 
-            data.Status = AddProjectConstants.Statuses.Rejected;
             bool success = await _addProjectRepository.UpdateProjectAsync(data);
 
             if (success)
@@ -86,26 +85,6 @@ namespace WebApplication3.Controllers
                 return StatusCode(500, new { error = true, message = $"Internal server error, project {data.Project} couldn't be rejected" });
             }
 
-        }
-
-        [Route("AddProject/CorrectionProjectAsync")]
-        [HttpPut]
-        public async Task<IActionResult> CorrectionProjectAsync([FromBody] AddProjectModel data)
-        {
-            if (data == null) return BadRequest(new { error = true, message = "Error: no data provided" });
-
-            data.Status = AddProjectConstants.Statuses.Correction;
-
-            bool success = await _addProjectRepository.UpdateProjectAsync(data);
-
-            if (success)
-            {
-                return Ok(new {success=true, message = "Project sended to correction", status=data.Status});
-            }
-            else
-            {
-                return StatusCode(500, new { error = true, message = $"Internal server error, project {data.Project} couldn't be rejected" });
-            }
         }
     }
 }

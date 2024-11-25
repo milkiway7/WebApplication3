@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
-import { createNewItemPOST, rejectItemPUT, correctionItemPUT, mapStatuses } from "../Helpers/Helpers"
+import { createNewItemPOST, updateFormStatus, mapStatuses, processForm } from "../Helpers/Helpers"
 
 const AddProject = () => {
     const [formData, setFormData] = useState({
@@ -34,8 +34,8 @@ const AddProject = () => {
 
     useEffect(() => {
         console.log(formData)
-        console.log("USE EFFECT")
-    },[formData])
+    }, [formData])
+
     function handleDataChange(e) {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -56,17 +56,15 @@ const AddProject = () => {
 
         const action = e.nativeEvent.submitter.value;
 
-        console.log(action)
-
         switch (action) {
             case 'submit':
-                createNewItemPOST(formData, setFormData);
+                processForm(setFormData, addProjectConstants.statuses.newItem, createNewItemPOST)
                 break;
             case 'correction':
-                correctionItemPUT(formData, setFormData);
+                processForm(setFormData, addProjectConstants.statuses.correction, updateFormStatus)
                 break;
             case 'reject':
-                rejectItemPUT(formData, setFormData);
+                processForm(setFormData, addProjectConstants.statuses.rejected, updateFormStatus)
                 break;
         }
     };
