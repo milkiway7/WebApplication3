@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Modal, ModalTable } from './Modal';
 import { addProjectConstants } from "../Constants/Constants";
-import { createNewItemPOST, rejectItemPUT, mapStatuses } from "../Helpers/Helpers"
+import { createNewItemPOST, rejectItemPUT, correctionItemPUT, mapStatuses } from "../Helpers/Helpers"
 
 const AddProject = () => {
     const [formData, setFormData] = useState({
@@ -61,6 +61,9 @@ const AddProject = () => {
         switch (action) {
             case 'submit':
                 createNewItemPOST(formData, setFormData);
+                break;
+            case 'correction':
+                correctionItemPUT(formData, setFormData);
                 break;
             case 'reject':
                 rejectItemPUT(formData, setFormData);
@@ -332,7 +335,7 @@ const FormButtons = ({ status }) => {
             case addProjectConstants.statuses.newItem:
                 return (<div className="form-buttons-list">
                     <button type="submit" name="action" value="reject">Reject</button>
-                    <button type="submit" >Send to correction</button>
+                    <button type="submit" name="action" value="correction">Send to correction</button>
                     <button type="submit" >Approve</button>
                 </div>)
                 break;

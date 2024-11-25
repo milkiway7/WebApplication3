@@ -87,5 +87,25 @@ namespace WebApplication3.Controllers
             }
 
         }
+
+        [Route("AddProject/CorrectionProjectAsync")]
+        [HttpPut]
+        public async Task<IActionResult> CorrectionProjectAsync([FromBody] AddProjectModel data)
+        {
+            if (data == null) return BadRequest(new { error = true, message = "Error: no data provided" });
+
+            data.Status = AddProjectConstants.Statuses.Correction;
+
+            bool success = await _addProjectRepository.UpdateProjectAsync(data);
+
+            if (success)
+            {
+                return Ok(new {success=true, message = "Project sended to correction", status=data.Status});
+            }
+            else
+            {
+                return StatusCode(500, new { error = true, message = $"Internal server error, project {data.Project} couldn't be rejected" });
+            }
+        }
     }
 }

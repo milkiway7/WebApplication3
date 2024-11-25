@@ -54,8 +54,6 @@ export function createNewItemPOST(formData, setFormData) {
         });
 }
 export function rejectItemPUT(formData, setFormData) {
-    console.log(formData)
-
     fetch("AddProject/RejectProjectAsync", {
         method: "PUT",
         headers: {
@@ -77,5 +75,29 @@ export function rejectItemPUT(formData, setFormData) {
         }
     }).catch((error) => {
         console.error('Error:', error)
+    })
+}
+export function correctionItemPUT(formData, setFormData) {
+
+    fetch('AddProject/CorrectionProjectAsync',{
+        method: 'PUT',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(formData)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error, project couldn't be processed / rejected. Status: ${response.stauts}`)
+        }
+        return response.json();
+    }).then(data => {
+        if (data.success) {
+            setFormData(prevData => ({
+                ...prevData,
+                status: data.status
+            }))
+        }
+    }).catch(error => {
+        console.log("Error: ", error)
     })
 }
