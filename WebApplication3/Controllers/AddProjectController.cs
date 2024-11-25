@@ -45,7 +45,6 @@ namespace WebApplication3.Controllers
             if (user != null) {
                 data.CreatedBy = user.Id;
                 data.CreatedByEmail = user.EmailAddress;
-                //data.Status = AddProjectConstants.Statuses.NewItem;
                 data.CreatedAt = DateTime.Now;
 
                 bool success = await _addProjectRepository.AddProjectAsync(data);

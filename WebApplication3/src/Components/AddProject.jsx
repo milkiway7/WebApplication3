@@ -29,7 +29,6 @@ const AddProject = () => {
         supportingDocumentation: null
     })
     const isReadOnly = formData.status == addProjectConstants.statuses.rejected ||
-                    formData.status == addProjectConstants.statuses.newItem ||
                     formData.status == addProjectConstants.statuses.created;
 
     useEffect(() => {
@@ -65,6 +64,12 @@ const AddProject = () => {
                 break;
             case 'reject':
                 processForm(setFormData, addProjectConstants.statuses.rejected, updateFormStatus)
+                break;
+            case 'sendFromCorrection':
+                processForm(setFormData, addProjectConstants.statuses.newItem, updateFormStatus)
+                break;
+            case 'approve':
+                processForm(setFormData, addProjectConstants.statuses.created, updateFormStatus)
                 break;
         }
     };
@@ -334,12 +339,12 @@ const FormButtons = ({ status }) => {
                 return (<div className="form-buttons-list">
                     <button type="submit" name="action" value="reject">Reject</button>
                     <button type="submit" name="action" value="correction">Send to correction</button>
-                    <button type="submit" >Approve</button>
+                    <button type="submit" name="action" value="approve">Approve</button>
                 </div>)
                 break;
             case addProjectConstants.statuses.correction:
                 return (<div className="form-buttons-list">
-                    <button type="submit" >Send for approval</button>
+                    <button type="submit" name="action" value="sendFromCorrection">Send for approval</button>
                 </div>)
                 break;
         }
